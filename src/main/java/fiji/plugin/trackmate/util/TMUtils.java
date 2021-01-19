@@ -472,8 +472,12 @@ public class TMUtils
 
 	public static < T extends Type< T > > ImgPlus< T > hyperSlice( final ImgPlus< T > img, final long channel, final long frame )
 	{
-		final ImgPlus< T > imgT = ImgPlusViews.hyperSlice( img, img.dimensionIndex( Axes.TIME ), frame );
-		final ImgPlus< T > imgTC = ImgPlusViews.hyperSlice( imgT, imgT.dimensionIndex( Axes.CHANNEL ), channel );
+		final ImgPlus< T > imgT = ( img.dimensionIndex( Axes.TIME ) < 0 )
+				? img
+				: ImgPlusViews.hyperSlice( img, img.dimensionIndex( Axes.TIME ), frame );
+		final ImgPlus< T > imgTC = ( imgT.dimensionIndex( Axes.CHANNEL ) < 0 )
+				? imgT
+				: ImgPlusViews.hyperSlice( imgT, imgT.dimensionIndex( Axes.CHANNEL ), channel );
 		return imgTC;
 	}
 
